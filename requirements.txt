@@ -1,0 +1,5 @@
+aiohttp
+httpx
+requests
+urllib3
+pycurl
