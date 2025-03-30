@@ -58,3 +58,7 @@ pip install -r requirements.txt
 ```bash
 python benchmark.py
 ```
+3**Running Analytics:**
+```bash
+python benchmark_analytics.py
+```

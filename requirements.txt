@@ -4,3 +4,6 @@ requests
 urllib3
 pycurl
 coverage
+pandas
+matplotlib
+seaborn

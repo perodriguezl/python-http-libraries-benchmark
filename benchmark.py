@@ -6,7 +6,7 @@ from datetime import datetime
 from factory import PackageFactory
 
 CSV_FILE = "benchmark_results.csv"
-NUM_REQUESTS_PER_PACKAGE_RUN = 50
+NUM_REQUESTS_PER_PACKAGE_RUN = 20
 
 async def run_package(package_name):
     package = PackageFactory.get_package(package_name)
@@ -28,7 +28,7 @@ def run_benchmarks():
         if not file_exists:
             writer.writeheader()
 
-        for run in range(101):
+        for run in range(11):
             print(f"Benchmark run: {run + 1}")
             random.shuffle(packages)
 

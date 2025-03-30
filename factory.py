@@ -10,8 +10,8 @@ from io import BytesIO
 from model import BenchmarkResult
 
 TEST_URL = "https://postman-echo.com/get"
-NUM_REQUESTS_PER_PACKAGE_RUN = 50
-CONCURRENT_REQUESTS = 10
+NUM_REQUESTS_PER_PACKAGE_RUN = 20
+CONCURRENT_REQUESTS = 1
 
 class Package:
     async def run_async(self):
