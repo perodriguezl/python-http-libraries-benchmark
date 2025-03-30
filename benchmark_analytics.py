@@ -39,7 +39,7 @@ plt.show()
 # --- Plot 3: Mean Connection Time ---
 plt.figure(figsize=(10, 6))
 for pkg in packages:
-    series = df[f"conn_Mean_{pkg}"].astype(float)
+    series = df[f"conn_avg_{pkg}"].astype(float)
     mean_value = series.expanding().mean()
     sns.lineplot(x=mean_value.index, y=mean_value, label=pkg)
 plt.title("Mean Connection Time Across Runs")
@@ -53,7 +53,7 @@ plt.show()
 # --- Plot 4: Mean TLS Time (exclude N/A) ---
 plt.figure(figsize=(10, 6))
 for pkg in packages:
-    tls_col = df[f"tls_Mean_{pkg}"]
+    tls_col = df[f"tls_avg_{pkg}"]
     tls_filtered = tls_col[tls_col != "N/A"].astype(float)
     mean_value = tls_filtered.expanding().mean()
     sns.lineplot(x=mean_value.index, y=mean_value, label=pkg)

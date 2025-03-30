@@ -2,19 +2,34 @@ import asyncio
 import csv
 import random
 import os
+import time
+import sys
 from platform import system
 from datetime import datetime
 from factory import PackageFactory
 
 CSV_FILE = "benchmark_results.csv"
 NUM_REQUESTS_PER_PACKAGE_RUN = 20
+MAX_RETRIES = 3
 
 async def run_package(package_name):
     package = PackageFactory.get_package(package_name)
-    if package_name in ["aiohttp", "httpx"]:
-        return await package.run_async()
-    else:
-        return package.run_sync()
+    retries = 0
+    while retries < MAX_RETRIES:
+        try:
+            if package_name in ["aiohttp", "httpx"]:
+                return await package.run_async()
+            else:
+                return package.run_sync()
+        except Exception as e:
+            retries += 1
+            print(f"Error while running {package_name} (attempt {retries}): {e}")
+            if retries >= MAX_RETRIES:
+                print(f"Exceeded max retries for {package_name}. Exiting.")
+                sys.exit(1)
+            print("Retrying after 30 seconds...")
+            time.sleep(30)
+
 
 def run_benchmarks():
     packages = ["aiohttp", "httpx", "pycurl", "requests", "urllib3"]
@@ -29,7 +44,7 @@ def run_benchmarks():
         if not file_exists:
             writer.writeheader()
 
-        for run in range(11):
+        for run in range(101):
             print(f"Benchmark run: {run + 1}")
             random.shuffle(packages)
 
