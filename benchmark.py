@@ -2,6 +2,7 @@ import asyncio
 import csv
 import random
 import os
+from platform import system
 from datetime import datetime
 from factory import PackageFactory
 
@@ -60,5 +61,6 @@ def run_benchmarks():
             print("-" * 40)
 
 if __name__ == "__main__":
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    if system() == "Windows":
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     run_benchmarks()
