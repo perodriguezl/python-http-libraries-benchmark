@@ -58,7 +58,24 @@ pip install -r requirements.txt
 ```bash
 python benchmark.py
 ```
-3**Running Analytics:**
+3. **Running Analytics:**
 ```bash
 python benchmark_analytics.py
 ```
+
+## Results
+
+### Environment:
+OS: Windows 11 Home
+
+Processor: Intel(R) Core(TM) i5-10400 CPU @ 2.90GHz   2.90 GHz
+
+RAM: 12.0 GB
+
+Location Type: Localhost
+
+
+![Mean Connection Time](mean_connection_time.png)
+![Mean Req/Sec ](mean_requests_per_second.png)
+![Mean TLS handshake time](mean_tls_handshake_time.png)
+![Mean Total Response times](mean_total_response_time.png)

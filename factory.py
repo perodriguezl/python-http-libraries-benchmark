@@ -1,4 +1,3 @@
-# factory.py
 import asyncio
 import time
 import requests
@@ -9,8 +8,8 @@ import pycurl
 from io import BytesIO
 from model import BenchmarkResult
 
-TEST_URL = "https://postman-echo.com/get"
-NUM_REQUESTS_PER_PACKAGE_RUN = 20
+TEST_URL = "http://localhost"
+NUM_REQUESTS_PER_PACKAGE_RUN = 100
 CONCURRENT_REQUESTS = 1
 
 class Package:
@@ -39,7 +38,7 @@ class AiohttpPackage(Package):
             await asyncio.gather(*tasks)
             duration = time.time() - start_total
 
-        return BenchmarkResult(NUM_REQUESTS_PER_PACKAGE_RUN / duration, duration, sum(conn_times) / NUM_REQUESTS_PER_PACKAGE_RUN, avg_tls_time=None)
+        return BenchmarkResult(NUM_REQUESTS_PER_PACKAGE_RUN/duration, duration, sum(conn_times)/NUM_REQUESTS_PER_PACKAGE_RUN, avg_tls_time=None)
 
 class HttpxPackage(Package):
     async def run_async(self):
@@ -59,7 +58,7 @@ class HttpxPackage(Package):
             await asyncio.gather(*tasks)
             duration = time.time() - start_total
 
-        return BenchmarkResult(NUM_REQUESTS_PER_PACKAGE_RUN / duration, duration, sum(conn_times) / NUM_REQUESTS_PER_PACKAGE_RUN, avg_tls_time=None)
+        return BenchmarkResult(NUM_REQUESTS_PER_PACKAGE_RUN/duration, duration, sum(conn_times)/NUM_REQUESTS_PER_PACKAGE_RUN, avg_tls_time=None)
 
 class PycurlPackage(Package):
     def run_sync(self):
@@ -84,7 +83,7 @@ class PycurlPackage(Package):
 
         duration = time.time() - start_total
 
-        return BenchmarkResult(NUM_REQUESTS_PER_PACKAGE_RUN / duration, duration, total_conn_time / NUM_REQUESTS_PER_PACKAGE_RUN, total_tls_time / NUM_REQUESTS_PER_PACKAGE_RUN)
+        return BenchmarkResult(NUM_REQUESTS_PER_PACKAGE_RUN/duration, duration, total_conn_time/NUM_REQUESTS_PER_PACKAGE_RUN, total_tls_time/NUM_REQUESTS_PER_PACKAGE_RUN)
 
 class RequestsPackage(Package):
     def run_sync(self):
@@ -101,7 +100,7 @@ class RequestsPackage(Package):
 
         duration = time.time() - start_total
 
-        return BenchmarkResult(NUM_REQUESTS_PER_PACKAGE_RUN / duration, duration, total_conn_time / NUM_REQUESTS_PER_PACKAGE_RUN, total_tls_time / NUM_REQUESTS_PER_PACKAGE_RUN)
+        return BenchmarkResult(NUM_REQUESTS_PER_PACKAGE_RUN/duration, duration, total_conn_time/NUM_REQUESTS_PER_PACKAGE_RUN, total_tls_time/NUM_REQUESTS_PER_PACKAGE_RUN)
 
 class Urllib3Package(Package):
     def run_sync(self):
@@ -117,7 +116,7 @@ class Urllib3Package(Package):
 
         duration = time.time() - start_total
 
-        return BenchmarkResult(NUM_REQUESTS_PER_PACKAGE_RUN / duration, duration, total_conn_time / NUM_REQUESTS_PER_PACKAGE_RUN, avg_tls_time=None)
+        return BenchmarkResult(NUM_REQUESTS_PER_PACKAGE_RUN/duration, duration, total_conn_time/NUM_REQUESTS_PER_PACKAGE_RUN, avg_tls_time=None)
 
 class PackageFactory:
     @staticmethod

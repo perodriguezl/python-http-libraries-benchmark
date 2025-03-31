@@ -9,7 +9,7 @@ from datetime import datetime
 from factory import PackageFactory
 
 CSV_FILE = "benchmark_results.csv"
-NUM_REQUESTS_PER_PACKAGE_RUN = 20
+NUM_REQUESTS_PER_PACKAGE_RUN = 100
 MAX_RETRIES = 3
 
 async def run_package(package_name):

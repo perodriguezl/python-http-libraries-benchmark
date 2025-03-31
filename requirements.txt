@@ -7,3 +7,4 @@ coverage
 pandas
 matplotlib
 seaborn
+niquests
