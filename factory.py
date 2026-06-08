@@ -28,7 +28,6 @@ class AiohttpPackage(Package):
             async with semaphore:
                 start_conn = time.time()
                 async with session.get(url) as response:
-                    await response.read()
                     conn_time = time.time() - start_conn
                     conn_times.append(conn_time)
 
@@ -49,10 +48,9 @@ class HttpxPackage(Package):
             async with semaphore:
                 start_conn = time.time()
                 response = await client.get(url)
-                await response.aread()
-                await response.aclose()
                 conn_time = time.time() - start_conn
                 conn_times.append(conn_time)
+                await response.aclose()
 
         async with httpx.AsyncClient() as client:
             start_total = time.time()
