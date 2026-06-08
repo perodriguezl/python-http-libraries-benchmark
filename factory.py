@@ -49,6 +49,8 @@ class HttpxPackage(Package):
             async with semaphore:
                 start_conn = time.time()
                 response = await client.get(url)
+                await response.aread()
+                await response.aclose()
                 conn_time = time.time() - start_conn
                 conn_times.append(conn_time)
 
