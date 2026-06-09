@@ -1,4 +1,4 @@
-aiohttp
+aiohttp[speedups]
 httpx
 requests
 urllib3
