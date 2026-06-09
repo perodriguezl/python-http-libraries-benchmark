@@ -32,17 +32,14 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r requirements.txt
 
-      - name: Start local HTTP server
-        run: python -m http.server 8080 --bind 0.0.0.0 &
-
-      - name: Wait for server
-        run: sleep 2
-
       - name: Run benchmarks
         env:
           BENCHMARK_URL: http://127.0.0.1:8080
           BENCHMARK_RUNS: ${{ inputs.num_runs || '21' }}
-        run: python benchmark.py
+        run: |
+          python -m http.server 8080 --bind 0.0.0.0 &
+          sleep 2
+          python benchmark.py
 
       - name: Generate charts
         run: python benchmark_analytics.py
