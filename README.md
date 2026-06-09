@@ -31,8 +31,8 @@ These metrics are chosen to reflect practical usage in applications such as REST
 
 To ensure fair and unbiased comparisons:
 
-- Each run sends a fixed number of requests (`NUM_REQUESTS = 100`) to `https://postman-echo.com/get`.
-- The script performs **6 complete benchmark runs**, where the first is used as warm-up and excluded from the CSV output.
+- Each run sends a fixed number of requests (`NUM_REQUESTS = 100`) to a local HTTP server (`http://localhost` by default).
+- The script performs **101 complete benchmark runs**, where the first is used as warm-up and excluded from the CSV output.
 - **Randomized Execution Order**: For every run, the order in which HTTP libraries are tested is randomized. This prevents any one library from benefiting from system or network caching effects due to consistent positioning.
 
 ---
@@ -54,14 +54,42 @@ Benchmark results are stored in `benchmark_results.csv`. Each row represents one
 ```bash
 pip install -r requirements.txt
 ```
-2. **Running the benchmark:**
+
+2. **Start a local HTTP server** (in a separate terminal):
+
 ```bash
-python benchmark.py
+python -m http.server 8080
 ```
-3. **Running Analytics:**
+
+3. **Run the benchmark:**
+
+```bash
+BENCHMARK_URL=http://localhost:8080 python benchmark.py
+```
+
+4. **Generate charts:**
+
 ```bash
 python benchmark_analytics.py
 ```
+
+### Environment Variables
+
+| Variable | Default | Description |
+|---|---|---|
+| `BENCHMARK_URL` | `http://localhost` | Target URL for requests |
+| `BENCHMARK_RUNS` | `101` | Total number of runs (first is warm-up) |
+
+Example with custom values:
+```bash
+BENCHMARK_URL=http://localhost:8080 BENCHMARK_RUNS=11 python benchmark.py
+```
+
+---
+
+## ⚙️ CI
+
+A GitHub Actions workflow runs the benchmark automatically every Sunday and commits updated results and charts back to the repository. It can also be triggered manually via the **Actions** tab, with optional inputs for Python version and number of runs.
 
 ## Results
 
