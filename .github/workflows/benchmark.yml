@@ -51,6 +51,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add benchmark_results.csv *.png
+          git add -f benchmark_results.csv
+          git add mean_requests_per_second.png mean_total_response_time.png mean_connection_time.png mean_tls_handshake_time.png
           git diff --staged --quiet || git commit -m "chore: update benchmark results [skip ci]"
           git push
