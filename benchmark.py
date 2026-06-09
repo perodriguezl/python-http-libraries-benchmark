@@ -44,7 +44,8 @@ def run_benchmarks():
         if not file_exists:
             writer.writeheader()
 
-        for run in range(101):
+        num_runs = int(os.environ.get("BENCHMARK_RUNS", 101))
+        for run in range(num_runs):
             print(f"Benchmark run: {run + 1}")
             random.shuffle(packages)
 

@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use("Agg")
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -34,7 +36,7 @@ def plot_metric(metric_key, title, ylabel, filename):
     plt.grid(True)
     plt.tight_layout()
     plt.savefig(filename)
-    plt.show()
+    plt.close()
 
 
 # Generate all plots
