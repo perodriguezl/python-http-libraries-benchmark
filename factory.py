@@ -1,4 +1,5 @@
 import asyncio
+import os
 import time
 import requests
 import httpx
@@ -8,7 +9,7 @@ import pycurl
 from io import BytesIO
 from model import BenchmarkResult
 
-TEST_URL = "http://localhost"
+TEST_URL = os.environ.get("BENCHMARK_URL", "http://localhost")
 NUM_REQUESTS_PER_PACKAGE_RUN = 100
 CONCURRENT_REQUESTS = 1
 
