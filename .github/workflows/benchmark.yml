@@ -45,9 +45,12 @@ jobs:
         run: python benchmark_analytics.py
 
       - name: Commit results
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
           git add -f benchmark_results.csv
           git add mean_requests_per_second.png mean_total_response_time.png mean_connection_time.png mean_tls_handshake_time.png
           git diff --staged --quiet || git commit -m "chore: update benchmark results [skip ci]"
