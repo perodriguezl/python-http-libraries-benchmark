@@ -33,14 +33,14 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Start local HTTP server
-        run: python -m http.server 8080 &
+        run: python -m http.server 8080 --bind 0.0.0.0 &
 
       - name: Wait for server
         run: sleep 2
 
       - name: Run benchmarks
         env:
-          BENCHMARK_URL: http://localhost:8080
+          BENCHMARK_URL: http://127.0.0.1:8080
           BENCHMARK_RUNS: ${{ inputs.num_runs || '21' }}
         run: python benchmark.py
 
