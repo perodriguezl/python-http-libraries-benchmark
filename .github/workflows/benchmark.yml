@@ -29,7 +29,9 @@ jobs:
           python-version: ${{ inputs.python_version || '3.12' }}
 
       - name: Install system dependencies
-        run: sudo apt-get install -y libcurl4-openssl-dev libssl-dev
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcurl4-openssl-dev libssl-dev
 
       - name: Install Python dependencies
         run: pip install -r requirements.txt
