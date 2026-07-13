@@ -6,6 +6,7 @@ import httpx
 import aiohttp
 import urllib3
 import pycurl
+from curl_cffi import requests as curl_cffi_requests
 from io import BytesIO
 from model import BenchmarkResult
 
@@ -86,6 +87,23 @@ class PycurlPackage(Package):
 
         return BenchmarkResult(NUM_REQUESTS_PER_PACKAGE_RUN/duration, duration, total_conn_time/NUM_REQUESTS_PER_PACKAGE_RUN, total_tls_time/NUM_REQUESTS_PER_PACKAGE_RUN)
 
+class CurlCffiPackage(Package):
+    def run_sync(self):
+        total_conn_time = 0
+        total_tls_time = 0
+
+        start_total = time.time()
+        for _ in range(NUM_REQUESTS_PER_PACKAGE_RUN):
+            start_conn = time.time()
+            response = curl_cffi_requests.get(TEST_URL, timeout=(2.0, 5.0))
+            conn_time = time.time() - start_conn
+            total_conn_time += conn_time
+            total_tls_time += response.elapsed.total_seconds()
+
+        duration = time.time() - start_total
+
+        return BenchmarkResult(NUM_REQUESTS_PER_PACKAGE_RUN/duration, duration, total_conn_time/NUM_REQUESTS_PER_PACKAGE_RUN, total_tls_time/NUM_REQUESTS_PER_PACKAGE_RUN)
+
 class RequestsPackage(Package):
     def run_sync(self):
         total_conn_time = 0
@@ -128,6 +146,8 @@ class PackageFactory:
             return HttpxPackage()
         elif package_name == "pycurl":
             return PycurlPackage()
+        elif package_name == "curl_cffi":
+            return CurlCffiPackage()
         elif package_name == "requests":
             return RequestsPackage()
         elif package_name == "urllib3":
