@@ -5,13 +5,14 @@ This project benchmarks popular Python HTTP libraries to compare their performan
 ---
 
 ## 📦 HTTP Libraries Benchmarked
-This benchmark includes five widely-used Python HTTP libraries—requests, urllib3, httpx, aiohttp, and pycurl—chosen for their relevance, diversity, and real-world usage. requests is the most popular and beginner-friendly library, while urllib3 offers low-level control and powers requests internally. httpx and aiohttp provide modern asynchronous support for high-concurrency applications. Finally, pycurl wraps the high-performance C-based libcurl library, often used in system-level or legacy environments. Together, they represent a broad spectrum of HTTP client capabilities in Python, from ease of use to advanced performance tuning.
+This benchmark includes six widely-used Python HTTP libraries—requests, urllib3, httpx, aiohttp, pycurl, and curl_cffi—chosen for their relevance, diversity, and real-world usage. requests is the most popular and beginner-friendly library, while urllib3 offers low-level control and powers requests internally. httpx and aiohttp provide modern asynchronous support for high-concurrency applications. pycurl wraps the high-performance C-based libcurl library, often used in system-level or legacy environments. Finally, curl_cffi is a modern libcurl binding exposing a requests-compatible API, notable for its ability to impersonate browser TLS/JA3 fingerprints. Together, they represent a broad spectrum of HTTP client capabilities in Python, from ease of use to advanced performance tuning.
 
 - [`aiohttp`](https://docs.aiohttp.org/)
 - [`httpx`](https://www.python-httpx.org/)
 - [`requests`](https://docs.python-requests.org/)
 - [`urllib3`](https://urllib3.readthedocs.io/)
 - [`pycurl`](http://pycurl.io/)
+- [`curl_cffi`](https://curl-cffi.readthedocs.io/)
 
 ---
 

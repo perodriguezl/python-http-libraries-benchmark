@@ -8,7 +8,7 @@ import seaborn as sns
 df = pd.read_csv("benchmark_results.csv")
 
 # List of packages
-packages = ["aiohttp", "httpx", "pycurl", "requests", "urllib3"]
+packages = ["aiohttp", "httpx", "pycurl", "curl_cffi", "requests", "urllib3"]
 
 # Plot configuration
 metrics_info = {
