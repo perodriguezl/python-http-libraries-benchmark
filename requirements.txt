@@ -3,6 +3,7 @@ httpx
 requests
 urllib3
 pycurl
+curl_cffi
 coverage
 pandas
 matplotlib

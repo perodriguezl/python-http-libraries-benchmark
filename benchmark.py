@@ -32,7 +32,7 @@ async def run_package(package_name):
 
 
 def run_benchmarks():
-    packages = ["aiohttp", "httpx", "pycurl", "requests", "urllib3"]
+    packages = ["aiohttp", "httpx", "pycurl", "curl_cffi", "requests", "urllib3"]
     metrics = ["req_sec", "total", "conn_avg", "tls_avg"]
 
     fieldnames = ["start_time", "end_time", "num_requests"] + [f"{metric}_{pkg}" for metric in metrics for pkg in packages]
