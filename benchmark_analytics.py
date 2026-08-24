@@ -6,8 +6,6 @@ import seaborn as sns
 
 from model import PACKAGES
 
-# Load CSV
-df = pd.read_csv("benchmark_results.csv")
 
 # Plot configuration
 metrics_info = {
@@ -18,7 +16,7 @@ metrics_info = {
 }
 
 
-def plot_metric(metric_key, title, ylabel, filename):
+def plot_metric(df, metric_key, title, ylabel, filename):
     plt.figure(figsize=(10, 6))
     for pkg in PACKAGES:
         col_name = f"{metric_key}_{pkg}"
@@ -39,5 +37,8 @@ def plot_metric(metric_key, title, ylabel, filename):
 
 
 if __name__ == "__main__":
+    # Load CSV
+    df = pd.read_csv("benchmark_results.csv")
+
     for metric_key, (title, ylabel, filename) in metrics_info.items():
-        plot_metric(metric_key, title, ylabel, filename)
+        plot_metric(df, metric_key, title, ylabel, filename)

@@ -1,14 +1,17 @@
 import asyncio
 import os
 import time
-import requests
-import httpx
-import aiohttp
-import urllib3
-import pycurl
 from io import BytesIO
-from model import BenchmarkResult
+
+import aiohttp
+import httpx
 import httpx2
+import niquests
+import pycurl
+import requests
+import urllib3
+
+from model import BenchmarkResult
 
 TEST_URL = os.environ.get("BENCHMARK_URL", "http://localhost")
 NUM_REQUESTS_PER_PACKAGE_RUN = 100
@@ -126,6 +129,25 @@ class RequestsPackage(Package):
 
         return BenchmarkResult(NUM_REQUESTS_PER_PACKAGE_RUN/duration, duration, total_conn_time/NUM_REQUESTS_PER_PACKAGE_RUN, total_tls_time/NUM_REQUESTS_PER_PACKAGE_RUN)
 
+
+class NiquestsPackage(Package):
+    def run_sync(self):
+        total_conn_time = 0
+        total_tls_time = 0
+
+        start_total = time.time()
+        with niquests.Session(base_url=TEST_URL, timeout=(2.0, 5.0)) as s:
+            for _ in range(NUM_REQUESTS_PER_PACKAGE_RUN):
+                start_conn = time.time()
+                response = s.get("/", stream=True)
+                conn_time = time.time() - start_conn
+                total_conn_time += conn_time
+                total_tls_time += response.elapsed.total_seconds()
+
+            duration = time.time() - start_total
+
+        return BenchmarkResult(NUM_REQUESTS_PER_PACKAGE_RUN/duration, duration, total_conn_time/NUM_REQUESTS_PER_PACKAGE_RUN, total_tls_time/NUM_REQUESTS_PER_PACKAGE_RUN)
+
 class Urllib3Package(Package):
     def run_sync(self):
         http = urllib3.PoolManager()
@@ -147,6 +169,8 @@ class PackageFactory:
     def get_package(package_name):
         if package_name == "aiohttp":
             return AiohttpPackage()
+        elif package_name == "niquests":
+            return NiquestsPackage()
         elif package_name == "httpx":
             return HttpxPackage()
         elif package_name == "httpx2":
