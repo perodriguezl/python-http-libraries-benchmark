@@ -1,5 +1,6 @@
 aiohttp
 httpx
+httpx2
 requests
 urllib3
 pycurl

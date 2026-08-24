@@ -4,11 +4,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Load CSV
-df = pd.read_csv("benchmark_results.csv")
+from model import PACKAGES
 
-# List of packages
-packages = ["aiohttp", "httpx", "pycurl", "requests", "urllib3"]
 
 # Plot configuration
 metrics_info = {
@@ -19,9 +16,9 @@ metrics_info = {
 }
 
 
-def plot_metric(metric_key, title, ylabel, filename):
+def plot_metric(df, metric_key, title, ylabel, filename):
     plt.figure(figsize=(10, 6))
-    for pkg in packages:
+    for pkg in PACKAGES:
         col_name = f"{metric_key}_{pkg}"
         series = df[col_name]
         if metric_key == "tls_avg":
@@ -39,7 +36,9 @@ def plot_metric(metric_key, title, ylabel, filename):
     plt.close()
 
 
-# Generate all plots
-for metric_key, (title, ylabel, filename) in metrics_info.items():
-    plot_metric(metric_key, title, ylabel, filename)
+if __name__ == "__main__":
+    # Load CSV
+    df = pd.read_csv("benchmark_results.csv")
 
+    for metric_key, (title, ylabel, filename) in metrics_info.items():
+        plot_metric(df, metric_key, title, ylabel, filename)
