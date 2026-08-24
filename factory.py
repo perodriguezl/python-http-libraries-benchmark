@@ -8,6 +8,7 @@ import urllib3
 import pycurl
 from io import BytesIO
 from model import BenchmarkResult
+import httpx2
 
 TEST_URL = os.environ.get("BENCHMARK_URL", "http://localhost")
 NUM_REQUESTS_PER_PACKAGE_RUN = 100
@@ -60,6 +61,28 @@ class HttpxPackage(Package):
             duration = time.time() - start_total
 
         return BenchmarkResult(NUM_REQUESTS_PER_PACKAGE_RUN/duration, duration, sum(conn_times)/NUM_REQUESTS_PER_PACKAGE_RUN, avg_tls_time=None)
+
+
+class Httpx2Package(Package):
+    async def run_async(self):
+        semaphore = asyncio.Semaphore(CONCURRENT_REQUESTS)
+        conn_times = []
+
+        async def fetch(client, url):
+            async with semaphore:
+                start_conn = time.time()
+                response = await client.get(url)
+                conn_time = time.time() - start_conn
+                conn_times.append(conn_time)
+
+        async with httpx2.AsyncClient() as client:
+            start_total = time.time()
+            tasks = [fetch(client, TEST_URL) for _ in range(NUM_REQUESTS_PER_PACKAGE_RUN)]
+            await asyncio.gather(*tasks)
+            duration = time.time() - start_total
+
+        return BenchmarkResult(NUM_REQUESTS_PER_PACKAGE_RUN/duration, duration, sum(conn_times)/NUM_REQUESTS_PER_PACKAGE_RUN, avg_tls_time=None)
+
 
 class PycurlPackage(Package):
     def run_sync(self):
@@ -126,6 +149,8 @@ class PackageFactory:
             return AiohttpPackage()
         elif package_name == "httpx":
             return HttpxPackage()
+        elif package_name == "httpx2":
+            return Httpx2Package()
         elif package_name == "pycurl":
             return PycurlPackage()
         elif package_name == "requests":
