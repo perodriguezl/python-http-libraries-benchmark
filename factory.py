@@ -98,7 +98,7 @@ class CurlCffiPackage(Package):
             response = curl_cffi_requests.get(TEST_URL, timeout=(2.0, 5.0))
             conn_time = time.time() - start_conn
             total_conn_time += conn_time
-            total_tls_time += response.elapsed.total_seconds()
+            total_tls_time += response.elapsed
 
         duration = time.time() - start_total
 
